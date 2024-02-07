@@ -9,33 +9,33 @@ processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
 def predict(image, allergen):
     image = Image.open(image)
     match allergen:
-        case 1:
+        case 0:
             inputs = processor(text=["a product containing wheat or gluten", "a product without wheat nor gluten"], images=image, return_tensors="pt", padding=True)
-        case 2:
+        case 1:
             inputs = processor(text=["a product containing eggs", "a product without eggs"], images=image, return_tensors="pt", padding=True)
-        case 3:
+        case 2:
             inputs = processor(text=["a product containing milk", "a product without milk"], images=image, return_tensors="pt", padding=True)
-        case 4:
+        case 3:
             inputs = processor(text=["a product containing nuts", "a product without nuts"], images=image, return_tensors="pt", padding=True)
-        case 5:
+        case 4:
             inputs = processor(text=["a product containing peanuts", "a product without peanuts"], images=image, return_tensors="pt", padding=True)
-        case 6:
+        case 5:
             inputs = processor(text=["a product containing soya", "a product without soya"], images=image, return_tensors="pt", padding=True)
-        case 7:
+        case 6:
             inputs = processor(text=["a product containing molluscs", "a product without molluscs"], images=image, return_tensors="pt", padding=True)
-        case 8:
+        case 7:
             inputs = processor(text=["a product containing fish", "a product without fish"], images=image, return_tensors="pt", padding=True)
-        case 9:
+        case 8:
             inputs = processor(text=["a product containing lupin", "a product without lupin"], images=image, return_tensors="pt", padding=True)
-        case 10:
+        case 9:
             inputs = processor(text=["a product containing crustaceans", "a product without crustaceans"], images=image, return_tensors="pt", padding=True)
-        case 11:
+        case 10:
             inputs = processor(text=["a product containing sesame", "a product without sesame"], images=image, return_tensors="pt", padding=True)
-        case 12:
+        case 11:
             inputs = processor(text=["a product containing mustard", "a product without mustard"], images=image, return_tensors="pt", padding=True)
-        case 13:
+        case 12:
             inputs = processor(text=["a product containing celery", "a product without celery"], images=image, return_tensors="pt", padding=True)
-        case 14:
+        case 13:
             inputs = processor(text=["a product containing sulphites", "a product without sulphites"], images=image, return_tensors="pt", padding=True)
 
     outputs = model(**inputs)
@@ -48,9 +48,12 @@ def predict(image, allergen):
     return 0
 
 
-
 def main():
-    print(predict("dataset/003.jpg", 1))    # First arg: image path; Second: allergen (1: gluten...)
+    prediction_array = []
+    for i in range(0, 14):
+        prediction_array.append(predict("dataset/002.jpg", i))    # First arg: image path; Second: allergen (0: gluten, 1: eggs...)
+
+    print(prediction_array)
 
 if __name__ == "__main__":
     main()
