@@ -1,6 +1,10 @@
 from PIL import Image
 import requests
 
+import pandas as pd
+
+from statistics import mean
+
 from transformers import CLIPProcessor, CLIPModel
 
 allergens = {
@@ -19,6 +23,8 @@ allergens = {
     12: "celery",
     13: "sulphites"
 }
+
+nb_allergens = len(allergens)
 
 model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32")
 processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
@@ -63,11 +69,33 @@ def predict(image, allergen):
 
 
 def main():
-    prediction_array = []
-    for i in range(0, 14):
-        prediction_array.append(predict("dataset/003.jpg", i))    # First arg: image path; Second: allergen (0: gluten, 1: eggs...). See allergens line 6.
+    excel_file_path = 'labellisation.xlsx'
+    df = pd.read_excel(excel_file_path)
+    excel_col_range = [1, 15]
+    excel_row_shift = 1
 
-    print(prediction_array)
+    detailed_scores = []
+
+    for image in range(1, 21):  # 
+        true_array = df.iloc[image+excel_row_shift, excel_col_range[0]:excel_col_range[1]].values
+        prediction_array = []
+        for allergen in range(0, 14):
+            prediction_array.append(predict(f"feature_engineering_dataset/raw_data/{image:03d}.jpg", allergen))    # First arg: image path; Second: allergen (0: gluten, 1: eggs...). See allergens line 6.
+        
+        score = 0
+        for i in range(nb_allergens):
+            score += 1 - abs(true_array[i] - prediction_array[i])
+        score = score / nb_allergens
+
+        detailed_scores.append(score)
+        print(f"{image}/20 images processed.")
+    
+    total_score = mean(detailed_scores)
+
+    print(f"Score: {round(total_score*100, 1)}%")
+
+
 
 if __name__ == "__main__":
+    print("librairies sccessfully imported.")
     main()
