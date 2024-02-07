@@ -3,6 +3,23 @@ import requests
 
 from transformers import CLIPProcessor, CLIPModel
 
+allergens = {
+    0: "gluten",
+    1: "eggs",
+    2: "milk",
+    3: "nuts",
+    4: "peanuts",
+    5: "soja",
+    6: "molluscs",
+    7: "fish",
+    8: "lupin",
+    9: "crustaceans",
+    10: "sesame",
+    11: "mustard",
+    12: "celery",
+    13: "sulphites"
+}
+
 model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32")
 processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
 
@@ -42,16 +59,13 @@ def predict(image, allergen):
     logits_per_image = outputs.logits_per_image  # this is the image-text similarity score
     probs = logits_per_image.softmax(dim=1)  # we can take the softmax to get the label probabilities
     
-    if probs[0][0] > 0.5:
-        return 1
-
-    return 0
+    return probs[0][0].item()
 
 
 def main():
     prediction_array = []
     for i in range(0, 14):
-        prediction_array.append(predict("dataset/002.jpg", i))    # First arg: image path; Second: allergen (0: gluten, 1: eggs...)
+        prediction_array.append(predict("dataset/003.jpg", i))    # First arg: image path; Second: allergen (0: gluten, 1: eggs...). See allergens line 6.
 
     print(prediction_array)
 
