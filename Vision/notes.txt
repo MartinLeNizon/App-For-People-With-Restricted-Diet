@@ -1,0 +1,24 @@
+PS C:\Users\nizon\Documents\Perso\Cours\Cours 4A\The AI Lifecycle\App-For-People-With-Restricted-Diet> & C:/Python312/python.exe "c:/Users/nizon/Documents/Perso/Cours/Cours 4A/The AI Lifecycle/App-For-People-With-Restricted-Diet/Vision/test.py"
+{'id': 'chatcmpl-8zjOCBPEbAUdU2dTdHvKxYbWbA49k', 'object': 'chat.completion', 'created': 1709723176, 'model': 'gpt-4-1106-vision-preview', 'usage': {'prompt_tokens': 1458, 'completion_tokens': 72, 'total_tokens': 1530}, 'choices': [{'message': {'role': 'assistant', 'content': 'Yes, this product contains gluten. The ingredient list includes "wheat flour," which is a source of gluten. Products made from wheat, barley, rye, and triticale contain gluten, and wheat flour is one of the most common sources. Individuals with gluten-related disorders such as celiac disease or non-celiac gluten sensitivity should avoid this product.'}, 'finish_reason': 'stop', 'index': 0}]}
+PS C:\Users\nizon\Documents\Perso\Cours\Cours 4A\The AI Lifecycle\App-For-People-With-Restricted-Diet> & C:/Python312/python.exe "c:/Users/nizon/Documents/Perso/Cours/Cours 4A/The AI Lifecycle/App-For-People-With-Restricted-Diet/Vision/test.py"
+{'id': 'chatcmpl-8zjR4ewWxOSYTX4ODd2xs1yWjX9su', 'object': 'chat.completion', 'created': 1709723354, 'model': 'gpt-4-1106-vision-preview', 'usage': {'prompt_tokens': 1468, 'completion_tokens': 1, 'total_tokens': 1469}, 'choices': [{'message': {'role': 'assistant', 'content': 'Yes'}, 'finish_reason': 'stop', 'index': 0}]}
+PS C:\Users\nizon\Documents\Perso\Cours\Cours 4A\The AI Lifecycle\App-For-People-With-Restricted-Diet> & C:/Python312/python.exe "c:/Users/nizon/Documents/Perso/Cours/Cours 4A/The AI Lifecycle/App-For-People-With-Restricted-Diet/Vision/test.py"
+{'id': 'chatcmpl-8zjRSyKfnayv6Q08c5LA4oAGr0W4z', 'object': 'chat.completion', 'created': 1709723378, 'model': 'gpt-4-1106-vision-preview', 'usage': {'prompt_tokens': 1469, 'completion_tokens': 1, 'total_tokens': 1470}, 'choices': [{'message': {'role': 'assistant', 'content': 'No'}, 'finish_reason': 'stop', 'index': 0}]}
+PS C:\Users\nizon\Documents\Perso\Cours\Cours 4A\The AI Lifecycle\App-For-People-With-Restricted-Diet> & C:/Python312/python.exe "c:/Users/nizon/Documents/Perso/Cours/Cours 4A/The AI Lifecycle/App-For-People-With-Restricted-Diet/Vision/test.py"
+{'id': 'chatcmpl-8zjRq1GanZZ1MhqP83T8Yoa4a5Tx7', 'object': 'chat.completion', 'created': 1709723402, 'model': 'gpt-4-1106-vision-preview', 'usage': {'prompt_tokens': 1468, 'completion_tokens': 1, 'total_tokens': 1469}, 'choices': [{'message': {'role': 'assistant', 'content': 'Yes'}, 'finish_reason': 'stop', 'index': 0}]}
+PS C:\Users\nizon\Documents\Perso\Cours\Cours 4A\The AI Lifecycle\App-For-People-With-Restricted-Diet> git add Vision
+PS C:\Users\nizon\Documents\Perso\Cours\Cours 4A\The AI Lifecycle\App-For-People-With-Restricted-Diet> git commit -m "Vision folder and test file added."
+[main 76749f0] Vision folder and test file added.
+ 1 file changed, 47 insertions(+)
+ create mode 100644 Vision/test.py
+PS C:\Users\nizon\Documents\Perso\Cours\Cours 4A\The AI Lifecycle\App-For-People-With-Restricted-Diet> git push
+Enumerating objects: 5, done.
+Counting objects: 100% (5/5), done.
+Delta compression using up to 12 threads
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (4/4), 920 bytes | 230.00 KiB/s, done.
+Total 4 (delta 1), reused 0 (delta 0), pack-reused 0
+remote: Resolving deltas: 100% (1/1), completed with 1 local object.
+To https://github.com/MartinLeNizon/App-For-People-With-Restricted-Diet.git
+   d113a0e..76749f0  main -> main
+PS C:\Users\nizon\Documents\Perso\Cours\Cours 4A\The AI Lifecycle\App-For-People-With-Restricted-Diet>
