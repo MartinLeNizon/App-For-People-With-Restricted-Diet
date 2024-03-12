@@ -93,6 +93,7 @@ def predict_all_allergens(image_data):
 
 @app.route('/api/predict-allergens', methods=['POST'])
 def predict_allergens_endpoint():
+    return "Bonjour"
     try:
         # Get the image data from the request (assuming it's sent as raw bytes)
         image_data = request.get_data()
