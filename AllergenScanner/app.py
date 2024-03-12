@@ -1,3 +1,8 @@
+from flask import Flask, request, jsonify, render_template
+
+app = Flask(__name__)
+
+# ---------------------- SCRIPT -----------------------
 import base64
 import requests
 
@@ -31,10 +36,11 @@ def encode_image(image_path):
         return base64.b64encode(image_file.read()).decode('utf-8')
 
 # Allergen number from 0 to 13
-def predict_allergen(image_path, allergen):
+def predict_allergen(image_data, allergen):
      
 	# Getting the base64 string
-	base64_image = encode_image(image_path)
+	# base64_image = encode_image(image_path)
+	base64_image = image_data
 
 	headers = {
 		"Content-Type": "application/json",
@@ -75,12 +81,37 @@ def predict_allergen(image_path, allergen):
 	else:
 		print("ERROR: VISION result not formatted")
 
-def predict_all_allergens(image_path):
-	prediction = [True, True, True, True, True, True, True, True, True, True, True, True, True]	# All true by default (in case of failure to format the result for example)
-	for allergen in range(0, len(allergens)):
-		prediction[allergen] = predict_allergen(image_path, allergen)
+def predict_all_allergens(image_data):
+    prediction = {}  # Initialize an empty dictionary
+    for allergen in range(len(allergens)):
+        prediction[allergens[allergen]] = predict_allergen(image_data, allergen)
 
-	return prediction
+    return prediction
+# ---------------------- SCRIPT END -----------------------
 
 
-predict_all_allergens(image_path)
+
+@app.route('/api/predict-allergens', methods=['POST'])
+def predict_allergens_endpoint():
+    try:
+        # Get the image data from the request (assuming it's sent as raw bytes)
+        image_data = request.get_data()
+
+        # Call your modified function to get the prediction
+        prediction = predict_all_allergens(image_data)
+
+        print(prediction)
+
+        # Return the prediction as JSON
+        return jsonify(prediction)
+
+    except Exception as e:
+        # Handle any exceptions (e.g., invalid input, API failures)
+        return jsonify({'error': str(e)})
+    
+@app.route('/')
+def index():
+    return render_template("index.html")
+
+if __name__ == '__main__':
+     app.run(debug=True)  # Run the app in debug mode
