@@ -27,7 +27,6 @@ function takePicture() {
     fetch('/api/process-image', { method: 'POST', body: imageData })
         .then(response => response.json()) // Parse the JSON response
         .then(data => {
-            // setTimeout(() => {
             console.log(data)
             document.getElementById('gluten').textContent = `Gluten: ${data.gluten}`;
             document.getElementById('eggs').textContent = `Eggs: ${data.eggs}`;
@@ -43,7 +42,6 @@ function takePicture() {
             document.getElementById('mustard').textContent = `Mustard: ${data.mustard}`;
             document.getElementById('celery').textContent = `Celery: ${data.celery}`;
             document.getElementById('sulphites').textContent = `Sulphites: ${data.sulphites}`;
-            // }, 180000); // 15 seconds in milliseconds
         })
         .catch(error => {
             console.error('Error processing image.', error);

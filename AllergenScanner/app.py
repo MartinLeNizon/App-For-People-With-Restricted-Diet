@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, url_for
 
 app = Flask(__name__)
 
@@ -42,8 +42,10 @@ def predict_allergen(image_data, allergen):
     
     # Getting the base64 string
     base64_image = image_data
+    
+    # base64_image = encode_image(url_for('static', filename='001.jpg'))
 
-    return True
+    return "Yes"
 
     headers = {
         "Content-Type": "application/json",
@@ -81,6 +83,8 @@ def predict_allergen(image_data, allergen):
 
 def predict_all_allergens(image_data):
     prediction = {}  # Initialize an empty dictionary
+
+    # prediction[allergens[0]] = predict_allergen(image_data, 0)
     for allergen in range(len(allergens)):
         prediction[allergens[allergen]] = predict_allergen(image_data, allergen)
 
