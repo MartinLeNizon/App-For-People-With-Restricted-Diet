@@ -43,8 +43,6 @@ def predict_allergen(image_data, allergen):
     # Getting the base64 string
     base64_image = image_data
 
-    return True
-
     headers = {
         "Content-Type": "application/json",
         "Authorization": f"Bearer {api_key}"

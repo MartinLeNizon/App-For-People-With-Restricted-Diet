@@ -24,7 +24,30 @@ function takePicture() {
     const imageData = canvas.toDataURL('image/jpeg');
 
     // Send the image data to your Python script (via an API endpoint)
-    fetch('/api/predict-allergens', { method: 'POST', body: imageData });
+    fetch('/api/process-image', { method: 'POST', body: imageData })
+        .then(response => response.json()) // Parse the JSON response
+        .then(data => {
+            // setTimeout(() => {
+            console.log(data)
+            document.getElementById('gluten').textContent = `Gluten: ${data.gluten}`;
+            document.getElementById('eggs').textContent = `Eggs: ${data.eggs}`;
+            document.getElementById('milk').textContent = `Milk: ${data.milk}`;
+            document.getElementById('nuts').textContent = `Nuts: ${data.nuts}`;
+            document.getElementById('peanuts').textContent = `Peanuts: ${data.peanuts}`;
+            document.getElementById('soja').textContent = `Soja: ${data.soja}`;
+            document.getElementById('molluscs').textContent = `Molluscs: ${data.molluscs}`;
+            document.getElementById('fish').textContent = `Fish: ${data.fish}`;
+            document.getElementById('lupin').textContent = `Lupin: ${data.lupin}`;
+            document.getElementById('crustaceans').textContent = `crustaceans: ${data.crustaceans}`;
+            document.getElementById('sesame').textContent = `Sesame: ${data.sesame}`;
+            document.getElementById('mustard').textContent = `Mustard: ${data.mustard}`;
+            document.getElementById('celery').textContent = `Celery: ${data.celery}`;
+            document.getElementById('sulphites').textContent = `Sulphites: ${data.sulphites}`;
+            // }, 180000); // 15 seconds in milliseconds
+        })
+        .catch(error => {
+            console.error('Error processing image.', error);
+        });
 }
 
 // Initialize camera on page load

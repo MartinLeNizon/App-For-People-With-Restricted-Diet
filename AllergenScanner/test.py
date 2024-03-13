@@ -1,12 +1,6 @@
-from flask import Flask, request, jsonify, render_template
-
-app = Flask(__name__)
-
 # ---------------------- SCRIPT -----------------------
 import base64
 import requests
-
-import time
 
 # OpenAI API Key
 try:
@@ -41,9 +35,8 @@ def encode_image(image_path):
 def predict_allergen(image_data, allergen):
     
     # Getting the base64 string
-    base64_image = image_data
-
-    return True
+    base64_image = encode_image("AllergenScanner/001.jpg")
+    # base64_image = image_data
 
     headers = {
         "Content-Type": "application/json",
@@ -78,6 +71,13 @@ def predict_allergen(image_data, allergen):
     content = response_json['choices'][0]['message']['content']
 
     return content
+    
+    if content == "Yes":
+        return True
+    elif content == "No":
+        return False
+    else:
+        print("ERROR: VISION result not formatted")
 
 def predict_all_allergens(image_data):
     prediction = {}  # Initialize an empty dictionary
@@ -87,25 +87,4 @@ def predict_all_allergens(image_data):
     return prediction
 # ---------------------- SCRIPT END -----------------------
 
-@app.route('/api/process-image', methods=['POST'])
-def predict_allergens_endpoint():
-    try:
-        # Get the image data from the request (assuming it's sent as raw bytes)
-        image_data = request.get_data()
-
-        # Call your modified function to get the prediction
-        prediction = predict_all_allergens(image_data)
-
-        # Return the prediction as JSON
-        return jsonify(prediction)
-
-    except Exception as e:
-        # Handle any exceptions (e.g., invalid input, API failures)
-        return jsonify({'error': str(e)})
-    
-@app.route('/')
-def index():
-    return render_template("index.html")
-
-if __name__ == '__main__':
-     app.run(debug=True)  # Run the app in debug mode
+print(predict_all_allergens(0))
