@@ -79,7 +79,7 @@ def predict_all_allergens(image_data):
     # prediction[allergens[0]] = predict_allergen(image_data, 0)
     for allergen in range(len(allergens)):
         prediction[allergens[allergen]] = predict_allergen(image_data, allergen)
-        print(f"Done {allergen+1}/len(allergens)")
+        print(f"Done {allergen+1}/{len(allergens)}")
 
     return prediction
 # ---------------------- SCRIPT END -----------------------
@@ -88,8 +88,7 @@ def predict_all_allergens(image_data):
 def predict_allergens_endpoint():
     try:
         # Get the image data from the request (assuming it's sent as raw bytes)
-        # data = request.json
-        # image_data = data['imageData']
+
         data = request.json  # This will automatically parse the JSON data
         image_data = data['image']  # Make sure this matches the key you used in your JavaScript fetch request
 
