@@ -39,13 +39,6 @@ def encode_image(image_path):
 
 # Allergen number from 0 to 13
 def predict_allergen(image_data, allergen):
-    
-    # Getting the base64 string
-    base64_image = image_data
-    
-    # base64_image = encode_image(url_for('static', filename='001.jpg'))
-
-    return "Yes"
 
     headers = {
         "Content-Type": "application/json",
@@ -65,7 +58,7 @@ def predict_allergen(image_data, allergen):
             {
                 "type": "image_url",
                 "image_url": {
-                "url": f"data:image/jpeg;base64,{base64_image}",
+                "url": f"{image_data}",
                 "detail": "auto"
                 }
             }
@@ -78,7 +71,6 @@ def predict_allergen(image_data, allergen):
     response = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload) 
     response_json = response.json()
     content = response_json['choices'][0]['message']['content']
-
     return content
 
 def predict_all_allergens(image_data):
@@ -87,6 +79,7 @@ def predict_all_allergens(image_data):
     # prediction[allergens[0]] = predict_allergen(image_data, 0)
     for allergen in range(len(allergens)):
         prediction[allergens[allergen]] = predict_allergen(image_data, allergen)
+        print(f"Done {allergen+1}/len(allergens)")
 
     return prediction
 # ---------------------- SCRIPT END -----------------------
@@ -95,9 +88,11 @@ def predict_all_allergens(image_data):
 def predict_allergens_endpoint():
     try:
         # Get the image data from the request (assuming it's sent as raw bytes)
-        image_data = request.get_data()
+        # data = request.json
+        # image_data = data['imageData']
+        data = request.json  # This will automatically parse the JSON data
+        image_data = data['image']  # Make sure this matches the key you used in your JavaScript fetch request
 
-        # Call your modified function to get the prediction
         prediction = predict_all_allergens(image_data)
 
         # Return the prediction as JSON

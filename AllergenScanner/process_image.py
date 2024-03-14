@@ -71,11 +71,6 @@ def predict_allergen(image_data, allergen):
     response = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload) 
     response_json = response.json()
     content = response_json['choices'][0]['message']['content']
-
-    print(type(content))
-
-    test = "bonjour"
-    print(type(test))
     
     return content
 
@@ -89,5 +84,5 @@ def predict_all_allergens(image_data):
 # ---------------------- SCRIPT END -----------------------
 
 if __name__ == '__main__':
-    base64_image = encode_image("AllergenScanner/001.jpg")
+    base64_image = encode_image("AllergenScanner/static/001.jpg")
     print(predict_allergen(base64_image, 0))

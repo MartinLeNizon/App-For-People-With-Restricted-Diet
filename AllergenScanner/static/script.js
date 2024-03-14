@@ -24,7 +24,12 @@ function takePicture() {
     const imageData = canvas.toDataURL('image/jpeg');
 
     // Send the image data to your Python script (via an API endpoint)
-    fetch('/api/process-image', { method: 'POST', body: imageData })
+    fetch('/api/process-image', { 
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ image: imageData }) })
         .then(response => response.json()) // Parse the JSON response
         .then(data => {
             console.log(data)
