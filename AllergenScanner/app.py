@@ -1,6 +1,8 @@
-from flask import Flask, request, jsonify, render_template, url_for
+from flask import Flask, request, jsonify, render_template, url_for, session
 
 app = Flask(__name__)
+
+DEBUG = True
 
 # ---------------------- SCRIPT -----------------------
 import base64
@@ -40,113 +42,121 @@ def encode_image(image_path):
 def predict_all_allergens(image_data):
     prediction = {}  # Initialize an empty dictionary
 
-    headers = {
-        "Content-Type": "application/json",
-        "Authorization": f"Bearer {api_key}"
-    }
+    if DEBUG is True:
+        time.sleep(2)
 
-    payload = {
-        "model": "gpt-4-vision-preview",
-        "messages": [
-        {
-            "role": "user",
-            "content": [
+        prediction["prediction"] = "Bonjour"
+
+        return prediction
+    else:
+
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {api_key}"
+        }
+
+        payload = {
+            "model": "gpt-4-vision-preview",
+            "messages": [
             {
-                "type": "text",
-                "text": f"Does this product contain gluten, eggs, milk, nuts, peanuts, soja, molluscs, fish, lupin, crustaceans, sesame, mustard, celery or sulphites? Answer only by 'Yes' or 'No' for each allergen in the following way: Gluten: Yes/No, Eggs: Yes/No; Milk: Yes/No; Nuts: Yes/No; Peanuts: Yes/No; Soja: Yes/No; Molluscs: Yes/No; Fish: Yes/No; Lupin: Yes/No; Crustaceans: Yes/No; Sesame: Yes/No; Mustard: Yes/No; Celery: Yes/No; Sulphites: Yes/No;"
-            },
+                "role": "user",
+                "content": [
+                {
+                    "type": "text",
+                    "text": f"Does this product contain gluten, eggs, milk, nuts, peanuts, soja, molluscs, fish, lupin, crustaceans, sesame, mustard, celery or sulphites? Answer only by 'Yes' or 'No' for each allergen in the following way: Gluten: Yes/No, Eggs: Yes/No; Milk: Yes/No; Nuts: Yes/No; Peanuts: Yes/No; Soja: Yes/No; Molluscs: Yes/No; Fish: Yes/No; Lupin: Yes/No; Crustaceans: Yes/No; Sesame: Yes/No; Mustard: Yes/No; Celery: Yes/No; Sulphites: Yes/No;"
+                },
+                {
+                    "type": "image_url",
+                    "image_url": {
+                    "url": f"{image_data}",
+                    "detail": "auto"
+                    }
+                }
+                ]
+            }
+            ],
+            "max_tokens": 1000
+        }
+
+        tools = [
             {
-                "type": "image_url",
-                "image_url": {
-                "url": f"{image_data}",
-                "detail": "auto"
+                "type": "function",
+                "function": {
+                    "name": "get_current_weather",
+                    "description": "Get the current weather",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "gluten": {
+                                "type": "string",
+                                "description": "Presence of gluten"
+                            },
+                            "eggs": {
+                                "type": "string",
+                                "description": "Presence of eggs"
+                            },
+                            "milk": {
+                                "type": "string",
+                                "description": "Presence of milk"
+                            },
+                            "nuts": {
+                                "type": "string",
+                                "description": "Presence of nuts"
+                            },
+                            "peanuts": {
+                                "type": "string",
+                                "description": "Presence of peanuts"
+                            },
+                            "soja": {
+                                "type": "string",
+                                "description": "Presence of soja"
+                            },
+                            "molluscs": {
+                                "type": "string",
+                                "description": "Presence of molluscs"
+                            },
+                            "fish": {
+                                "type": "string",
+                                "description": "Presence of fish"
+                            },
+                            "lupin": {
+                                "type": "string",
+                                "description": "Presence of lupin"
+                            },
+                            "crustaceans": {
+                                "type": "string",
+                                "description": "Presence of crustaceans"
+                            },
+                            "sesame": {
+                                "type": "string",
+                                "description": "Presence of sesame"
+                            },
+                            "mustard": {
+                                "type": "string",
+                                "description": "Presence of mustard"
+                            },
+                            "celery": {
+                                "type": "string",
+                                "description": "Presence of celery"
+                            },
+                            "sulphites": {
+                                "type": "string",
+                                "description": "Presence of sulphites"
+                            },
+                        },
+                        "required": ["gluten", "eggs", "milk", "nuts", "peanuts", "soja", "molluscs", "fish", "lupin", "crustaceans", "sesame", "mustard", "celery", "sulphites"],
+                    }
                 }
             }
-            ]
-        }
-        ],
-        "max_tokens": 1000
-    }
+        ]
 
-    tools = [
-        {
-            "type": "function",
-            "function": {
-                "name": "get_current_weather",
-                "description": "Get the current weather",
-                "parameters": {
-                    "type": "object",
-                    "properties": {
-                        "gluten": {
-                            "type": "string",
-                            "description": "Presence of gluten"
-                        },
-                        "eggs": {
-                            "type": "string",
-                            "description": "Presence of eggs"
-                        },
-                        "milk": {
-                            "type": "string",
-                            "description": "Presence of milk"
-                        },
-                        "nuts": {
-                            "type": "string",
-                            "description": "Presence of nuts"
-                        },
-                        "peanuts": {
-                            "type": "string",
-                            "description": "Presence of peanuts"
-                        },
-                        "soja": {
-                            "type": "string",
-                            "description": "Presence of soja"
-                        },
-                        "molluscs": {
-                            "type": "string",
-                            "description": "Presence of molluscs"
-                        },
-                        "fish": {
-                            "type": "string",
-                            "description": "Presence of fish"
-                        },
-                        "lupin": {
-                            "type": "string",
-                            "description": "Presence of lupin"
-                        },
-                        "crustaceans": {
-                            "type": "string",
-                            "description": "Presence of crustaceans"
-                        },
-                        "sesame": {
-                            "type": "string",
-                            "description": "Presence of sesame"
-                        },
-                        "mustard": {
-                            "type": "string",
-                            "description": "Presence of mustard"
-                        },
-                        "celery": {
-                            "type": "string",
-                            "description": "Presence of celery"
-                        },
-                        "sulphites": {
-                            "type": "string",
-                            "description": "Presence of sulphites"
-                        },
-                    },
-                    "required": ["gluten", "eggs", "milk", "nuts", "peanuts", "soja", "molluscs", "fish", "lupin", "crustaceans", "sesame", "mustard", "celery", "sulphites"],
-                }
-            }
-        }
-    ]
+        response = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload) 
+        response_json = response.json()
+        content = response_json['choices'][0]['message']['content']
 
-    response = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload) 
-    response_json = response.json()
-    content = response_json['choices'][0]['message']['content']
+        prediction["prediction"] = content
 
-    prediction["prediction"] = content
-
-    return prediction
+        return prediction
 # ---------------------- SCRIPT END -----------------------
 
 @app.route('/api/process-image', methods=['POST'])
@@ -169,6 +179,14 @@ def predict_allergens_endpoint():
 @app.route('/')
 def index():
     return render_template("index.html")
+
+@app.route('/prediction.html')
+def prediction_results():
+    # Retrieve the prediction from the session
+    prediction = session.get('prediction', None)
+
+    # Pass the prediction data to the prediction.html template
+    return render_template("prediction.html", prediction=prediction)
 
 if __name__ == '__main__':
      app.run(debug=True)  # Run the app in debug mode

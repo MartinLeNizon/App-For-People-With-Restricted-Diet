@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction Results</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div id="predictionResult">Loading prediction...</div>
+    <script>
+        // Function to parse URL parameters
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        // Display the prediction data
+        function displayPrediction() {
+            // Decode the URL parameter to get the prediction data
+            const predictionDataParam = getQueryParam('data');
+            if (predictionDataParam) {
+                const predictionData = JSON.parse(decodeURIComponent(predictionDataParam));
+                const predictionElement = document.getElementById('predictionResult');
+                // Assuming the prediction data is a string or can be converted to string
+                predictionElement.innerHTML = `<p>Prediction: ${predictionData.prediction}</p>`;
+            } else {
+                // Handle the case where no data parameter is present in the URL
+                document.getElementById('predictionResult').innerHTML = '<p>No prediction data available.</p>';
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', (event) => {
+            displayPrediction();
+        });
+    </script>
+</body>
+</html>
