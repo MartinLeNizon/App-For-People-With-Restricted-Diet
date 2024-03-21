@@ -33,8 +33,8 @@ function takePicture() {
         .then(response => response.json()) // Parse the JSON response
         .then(data => {
             console.log(data)
-            document.getElementById('gluten').textContent = `Gluten: ${data.gluten}`;
-            document.getElementById('eggs').textContent = `Eggs: ${data.eggs}`;
+            document.getElementById('gluten').textContent = `Gluten: ${data.prediction}`;
+            /* document.getElementById('eggs').textContent = `Eggs: ${data.eggs}`;
             document.getElementById('milk').textContent = `Milk: ${data.milk}`;
             document.getElementById('nuts').textContent = `Nuts: ${data.nuts}`;
             document.getElementById('peanuts').textContent = `Peanuts: ${data.peanuts}`;
@@ -46,7 +46,7 @@ function takePicture() {
             document.getElementById('sesame').textContent = `Sesame: ${data.sesame}`;
             document.getElementById('mustard').textContent = `Mustard: ${data.mustard}`;
             document.getElementById('celery').textContent = `Celery: ${data.celery}`;
-            document.getElementById('sulphites').textContent = `Sulphites: ${data.sulphites}`;
+            document.getElementById('sulphites').textContent = `Sulphites: ${data.sulphites}`; */
         })
         .catch(error => {
             console.error('Error processing image.', error);
