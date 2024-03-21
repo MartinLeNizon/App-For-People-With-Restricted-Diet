@@ -65,3 +65,44 @@ video {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
   }
+
+  .prediction-card {
+    background-color: #ffffff; /* White background */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    padding: 20px; /* Spacing inside the card */
+    margin-top: 20px; /* Space above the card */
+    text-align: center; /* Center the text */
+    max-width: 600px; /* Maximum width of the card */
+    margin-left: auto; /* Center the card horizontally */
+    margin-right: auto;
+}
+
+.prediction-card h2 {
+    color: #333; /* Dark grey color for the heading */
+    margin-bottom: 15px; /* Space below the heading */
+}
+
+.prediction-card p {
+    color: #666; /* Lighter grey for the paragraph text */
+    font-size: 16px; /* Slightly larger font size */
+}
+
+.like-dislike {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.like-dislike button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 10px 20px;
+    margin: 5px;
+    border-radius: 5px;
+}
+
+.like-dislike span {
+    padding: 0 10px;
+}

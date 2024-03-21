@@ -8,6 +8,12 @@
 </head>
 <body>
     <div id="predictionResult">Loading prediction...</div>
+    <div class="like-dislike">
+        <button id="likeButton">👍 Like</button>
+        <span id="likeCount">0</span>
+        <button id="dislikeButton">👎 Dislike</button>
+        <span id="dislikeCount">0</span>
+    </div>
     <script>
         // Function to parse URL parameters
         function getQueryParam(param) {
@@ -23,7 +29,15 @@
                 const predictionData = JSON.parse(decodeURIComponent(predictionDataParam));
                 const predictionElement = document.getElementById('predictionResult');
                 // Assuming the prediction data is a string or can be converted to string
-                predictionElement.innerHTML = `<p>Prediction: ${predictionData.prediction}</p>`;
+                predictionElement.innerHTML = `
+                    <div class="result-container">
+                        <img src="static/images/logo.jpg" alt="Logo" class="logo">
+                        <div class="prediction-card">
+                            <h2>Prediction Result</h2>
+                            <p>${predictionData.prediction}</p>
+                        </div>
+                    </div>
+                `;
             } else {
                 // Handle the case where no data parameter is present in the URL
                 document.getElementById('predictionResult').innerHTML = '<p>No prediction data available.</p>';
@@ -33,6 +47,28 @@
         window.addEventListener('DOMContentLoaded', (event) => {
             displayPrediction();
         });
+
+        document.addEventListener('DOMContentLoaded', function() {
+        let likeCount = 0;
+        let dislikeCount = 0;
+
+        const likeButton = document.getElementById('likeButton');
+        const dislikeButton = document.getElementById('dislikeButton');
+        const likeCountElement = document.getElementById('likeCount');
+        const dislikeCountElement = document.getElementById('dislikeCount');
+
+        likeButton.addEventListener('click', function() {
+            likeCount++; // Increment the like count
+            likeCountElement.textContent = likeCount; // Update the display
+        });
+
+        dislikeButton.addEventListener('click', function() {
+            dislikeCount++; // Increment the dislike count
+            dislikeCountElement.textContent = dislikeCount; // Update the display
+        });
+    });
+
+
     </script>
 </body>
 </html>
