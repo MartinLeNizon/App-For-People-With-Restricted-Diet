@@ -33,7 +33,7 @@ function takePicture() {
         .then(response => response.json()) // Parse the JSON response
         .then(data => {
             console.log(data)
-            document.getElementById('gluten').textContent = `Gluten: ${data.prediction}`;
+            document.getElementById('prediction').textContent = `Prediction ${data.prediction}`;
             /* document.getElementById('eggs').textContent = `Eggs: ${data.eggs}`;
             document.getElementById('milk').textContent = `Milk: ${data.milk}`;
             document.getElementById('nuts').textContent = `Nuts: ${data.nuts}`;
