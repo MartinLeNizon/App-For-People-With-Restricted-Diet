@@ -135,7 +135,7 @@ def predict_all_allergens(image_data):
                         },
                     },
                     "required": ["gluten", "eggs", "milk", "nuts", "peanuts", "soja", "molluscs", "fish", "lupin", "crustaceans", "sesame", "mustard", "celery", "sulphites"],
-                },
+                }
             }
         }
     ]
