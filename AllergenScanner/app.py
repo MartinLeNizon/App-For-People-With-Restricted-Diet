@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify, render_template, url_for, session
 
 app = Flask(__name__)
 
-DEBUG = True
+DEBUG = False
 
 # ---------------------- SCRIPT -----------------------
 import base64
