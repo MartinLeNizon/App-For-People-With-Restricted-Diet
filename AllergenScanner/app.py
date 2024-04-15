@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify, render_template, url_for, session
 
 app = Flask(__name__)
 
-DEBUG = False
+DEBUG = True
 
 # ---------------------- SCRIPT -----------------------
 import base64
@@ -65,7 +65,7 @@ def predict_all_allergens(image_data):
     if DEBUG is True:
         time.sleep(2)
 
-        prediction["prediction"] = "Bonjour"
+        prediction["prediction"] = "Gluten: Yes Eggs: Yes Milk: Yes Nuts: Yes Peanuts: No Soja: Yes Molluscs: No Fish: Yes Lupin: No Crustaceans: Yes Sesame: No Mustard: No Celery: Yes Sulphites: Yes"
 
         return prediction
     else:
