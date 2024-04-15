@@ -39,6 +39,26 @@ def encode_image(image_path):
     with open(image_path, "rb") as image_file:
         return base64.b64encode(image_file.read()).decode('utf-8')
 
+# Function to format the answer given by the model
+def format_answer(input_string):
+    components = input_string.split()
+
+    # Initialize an empty dictionary to store the allergy information
+    allergies = {}
+
+    # Iterate through the components, assuming each pair is of the form "Allergy: Yes/No"
+    for i in range(0, len(components), 2):
+        allergy = components[i].rstrip(":")
+        answer = components[i + 1]
+
+        # Map "Yes" to True and "No" to False
+        allergies[allergy] = answer.lower() == "yes"
+
+    # Create the formatted string
+    formatted_string = ", ".join(f"{allergy}: {'Yes' if value else 'No'}" for allergy, value in allergies.items())
+
+    return formatted_string
+
 def predict_all_allergens(image_data):
     prediction = {}  # Initialize an empty dictionary
 
@@ -58,101 +78,31 @@ def predict_all_allergens(image_data):
         payload = {
             "model": "gpt-4-vision-preview",
             "messages": [
-            {
-                "role": "user",
-                "content": [
                 {
-                    "type": "text",
-                    "text": f"Does this product contain gluten, eggs, milk, nuts, peanuts, soja, molluscs, fish, lupin, crustaceans, sesame, mustard, celery or sulphites? Answer only by 'Yes' or 'No' for each allergen in the following way: Gluten: Yes/No, Eggs: Yes/No; Milk: Yes/No; Nuts: Yes/No; Peanuts: Yes/No; Soja: Yes/No; Molluscs: Yes/No; Fish: Yes/No; Lupin: Yes/No; Crustaceans: Yes/No; Sesame: Yes/No; Mustard: Yes/No; Celery: Yes/No; Sulphites: Yes/No;"
-                },
-                {
-                    "type": "image_url",
-                    "image_url": {
-                    "url": f"{image_data}",
-                    "detail": "auto"
+                    "role": "user",
+                    "content": [
+                    {
+                        "type": "text",
+                        "text": f"Does this product contain gluten, eggs, milk, nuts, peanuts, soja, molluscs, fish, lupin, crustaceans, sesame, mustard, celery or sulphites? Answer only by 'Yes' or 'No' for each allergen in the following way: Gluten: Yes/No, Eggs: Yes/No, Milk: Yes/No, Nuts: Yes/No, Peanuts: Yes/No, Soja: Yes/No, Molluscs: Yes/No, Fish: Yes/No, Lupin: Yes/No, Crustaceans: Yes/No, Sesame: Yes/No, Mustard: Yes/No, Celery: Yes/No, Sulphites: Yes/No."
+                    },
+                    {
+                        "type": "image_url",
+                        "image_url": {
+                            "url": f"{image_data}",
+                            "detail": "auto"
+                        }
                     }
+                    ]
                 }
-                ]
-            }
             ],
             "max_tokens": 1000
         }
 
-        tools = [
-            {
-                "type": "function",
-                "function": {
-                    "name": "get_current_weather",
-                    "description": "Get the current weather",
-                    "parameters": {
-                        "type": "object",
-                        "properties": {
-                            "gluten": {
-                                "type": "string",
-                                "description": "Presence of gluten"
-                            },
-                            "eggs": {
-                                "type": "string",
-                                "description": "Presence of eggs"
-                            },
-                            "milk": {
-                                "type": "string",
-                                "description": "Presence of milk"
-                            },
-                            "nuts": {
-                                "type": "string",
-                                "description": "Presence of nuts"
-                            },
-                            "peanuts": {
-                                "type": "string",
-                                "description": "Presence of peanuts"
-                            },
-                            "soja": {
-                                "type": "string",
-                                "description": "Presence of soja"
-                            },
-                            "molluscs": {
-                                "type": "string",
-                                "description": "Presence of molluscs"
-                            },
-                            "fish": {
-                                "type": "string",
-                                "description": "Presence of fish"
-                            },
-                            "lupin": {
-                                "type": "string",
-                                "description": "Presence of lupin"
-                            },
-                            "crustaceans": {
-                                "type": "string",
-                                "description": "Presence of crustaceans"
-                            },
-                            "sesame": {
-                                "type": "string",
-                                "description": "Presence of sesame"
-                            },
-                            "mustard": {
-                                "type": "string",
-                                "description": "Presence of mustard"
-                            },
-                            "celery": {
-                                "type": "string",
-                                "description": "Presence of celery"
-                            },
-                            "sulphites": {
-                                "type": "string",
-                                "description": "Presence of sulphites"
-                            },
-                        },
-                        "required": ["gluten", "eggs", "milk", "nuts", "peanuts", "soja", "molluscs", "fish", "lupin", "crustaceans", "sesame", "mustard", "celery", "sulphites"],
-                    }
-                }
-            }
-        ]
-
         response = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload) 
         response_json = response.json()
         content = response_json['choices'][0]['message']['content']
+
+        content = format_answer(content)
 
         prediction["prediction"] = content
 
