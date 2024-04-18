@@ -106,3 +106,17 @@ video {
 .like-dislike span {
     padding: 0 10px;
 }
+
+#languageSwitchButton {
+    position: fixed;
+    top: 30px;
+    right: 50px;
+    background-color: white; /* Change the button color to blue */
+    color: black; /* Change the text color to white */
+    padding: 20px; /* Increase the padding to make the button bigger */
+    border: none;
+    border-radius: 5px; /* Add some border radius to make the button round */
+    cursor: pointer;
+    font-size: 20px; /* Increase the font size */
+}
+

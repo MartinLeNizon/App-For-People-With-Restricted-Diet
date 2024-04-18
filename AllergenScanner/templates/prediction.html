@@ -14,8 +14,9 @@
         <button id="dislikeButton">👎 Dislike</button>
         <span id="dislikeCount">0</span>
     </div>
+    <button id="languageSwitchButton" style="position: fixed; top: 50px; right: 100px;">FR</button>
     <div style="padding: 20px">
-        <p>Disclaimer: This is a demo application and the predictions are not real. The predictions are generated using a pre-trained model and are for demonstration purposes only. Use with caution.</p>
+        <p id="disclaimer">Disclaimer: This is a demo application and the predictions are not real. The predictions are generated using a pre-trained model and are for demonstration purposes only. Use with caution.</p>
     </div>
     <script>
         // Function to parse URL parameters
@@ -36,8 +37,8 @@
                     <img src="static/images/logo.jpg" alt="Logo" class="logo" style="top: 0%; left: 0%; max-width: 150px;"">
                     <div class="result-container">
                         <div class="prediction-card">
-                            <h2>Prediction Result</h2>
-                            <p>${predictionData.prediction}</p>
+                            <h2 id="title">Prediction Result</h2>
+                            <p id="predictionText">${predictionData.prediction}</p>
                         </div>
                     </div>
                 `;
@@ -70,6 +71,104 @@
             dislikeCountElement.textContent = dislikeCount; // Update the display
         });
     });
+
+    function switchLanguage() {
+        const predictionElement = document.getElementById('predictionText');
+        const titleElement = document.getElementById('title');
+        const disclaimerElement = document.getElementById('disclaimer');
+        const likeButton = document.getElementById('likeButton');
+        const dislikeButton = document.getElementById('dislikeButton');
+        const languageSwitchButton = document.getElementById('languageSwitchButton');
+        const currentLanguage = predictionElement.getAttribute('data-language');
+
+        // English to French dictionary
+        const englishToFrench = {
+            'Gluten': 'Gluten',
+            'Eggs': 'Oeufs',
+            'Milk': 'Lait',
+            'Nuts': 'Noix',
+            'Peanuts': 'Arachides',
+            'Soja': 'Soja',
+            'Molluscs': 'Mollusques',
+            'Fish': 'Poisson',
+            'Lupin': 'Lupin',
+            'Crustaceans': 'Crustacés',
+            'Sesame': 'Sésame',
+            'Mustard': 'Moutarde',
+            'Celery': 'Céleri',
+            'Sulphites': 'Sulfites',
+            'Yes': 'Oui',
+            'No': 'Non',
+        };
+
+        // French to English dictionary
+        const frenchToEnglish = {
+            'Gluten': 'Gluten',
+            'Oeufs': 'Eggs',
+            'Lait': 'Milk',
+            'Noix': 'Nuts',
+            'Arachides': 'Peanuts',
+            'Soja': 'Soja',
+            'Mollusques': 'Molluscs',
+            'Poisson': 'Fish',
+            'Lupin': 'Lupin',
+            'Crustacés': 'Crustaceans',
+            'Sésame': 'Sesame',
+            'Moutarde': 'Mustard',
+            'Céleri': 'Celery',
+            'Sulfites': 'Sulphites',
+            'Oui': 'Yes',
+            'Non': 'No',
+        };
+
+        if (currentLanguage === 'french') {
+            // Switch to English
+            predictionElement.setAttribute('data-language', 'english');
+            let text = predictionElement.textContent;
+            for (const [frenchWord, englishWord] of Object.entries(frenchToEnglish)) {
+                const regex = new RegExp(`\\b${frenchWord}\\b`, 'g');
+                text = text.replace(regex, englishWord);
+            }
+            predictionElement.textContent = text;
+
+            // Translate the title
+            titleElement.textContent = "Prediction Result";
+
+            // Translate the disclaimer
+            disclaimerElement.textContent = "This is a demo application and the predictions are not real. The predictions are generated using a pre-trained model and are for demonstration purposes only. Use with caution.";
+
+            // Translate the like and dislike buttons
+            likeButton.textContent = "👍 Like";
+            dislikeButton.textContent = "👎 Dislike";
+            
+            languageSwitchButton.textContent = "FR";
+        } else {
+            // Switch to French
+            predictionElement.setAttribute('data-language', 'french');
+            let text = predictionElement.textContent;
+            for (const [englishWord, frenchWord] of Object.entries(englishToFrench)) {
+                const regex = new RegExp(`\\b${englishWord}\\b`, 'g');
+                text = text.replace(regex, frenchWord);
+            }
+            predictionElement.textContent = text;
+            
+            // Translate the title
+            titleElement.textContent = "Prédiction";
+
+            // Translate the disclaimer
+            disclaimerElement.textContent = "Il s'agit d'une application de démonstration et les prédictions ne sont pas réelles. Les prédictions sont générées à l'aide d'un modèle pré-entraîné et sont uniquement à des fins de démonstration. Utilisez avec prudence.";
+
+            // Translate the like and dislike buttons
+            likeButton.textContent = "👍 J'aime";
+            dislikeButton.textContent = "👎 Je n'aime pas";
+
+            languageSwitchButton.textContent = "EN";
+        }
+    }
+
+    // Add event listener to the language switch button
+    const languageSwitchButton = document.getElementById('languageSwitchButton');
+    languageSwitchButton.addEventListener('click', switchLanguage);
 
 
     </script>
